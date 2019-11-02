@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<title>Login Page</title>
+<head>
+<link rel="stylesheet" href="style.css">
+<div id="hd">Login Page</div>
+<script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<body id="bd">
+
+<br><br><br>
+
+<div id="fm">
+  Username:<br>
+  <input type="text" id="xx">
+  <br>
+  <button type="button" id="lm" onclick="abcd()">Login</button>
+</div> 
+<script type="text/javascript">
+function abcd()
+{
+   localStorage.removeItem("namedata");
+   localStorage.setItem("namedata",$("#xx").val());
+   location.href = "/app/contact.html";
+}
+</script>
+</body>
+</html>

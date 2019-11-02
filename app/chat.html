@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<title>Chat</title>
+<head>
+<link rel="stylesheet" href="style.css">
+<div id="hd">Chat</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+<body id="bd">
+<br>
+<div id="fn"></div>
+<br>
+<div id="con">
+<textarea rows="10" cols="50" id="data">
+</textarea><br>
+<button type='button' id='lm2' onclick="send()">Send</button>
+<button type='button' id='lm2' onclick="refresh()">Refresh</button>
+</div>
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+ refresh();
+});
+
+
+function send()
+{
+    var sen=$("#data").val();
+    sen=sen.split(" ");
+    var i;
+    var senddata="";
+    for (i = 0; i < sen.length; i++) 
+    {
+     senddata+=sen[i]+"~";
+    }
+    $.get("send_message.php",{userid:localStorage.getItem("namedata"),receiver:localStorage.getItem("receiver"),data:senddata},function(data){refresh()});
+}
+
+function refresh()
+{
+   var start1="<div id='st1'><h3>"+localStorage.getItem("namedata")+"</h3>";
+   var end1="</div><br>";
+   var start2="<div id='st2'><h3>"+localStorage.getItem("receiver")+"</h3>";;
+   var end2="</div><br>";
+   $.get("receive_message.php",{userid:localStorage.getItem("namedata"),receiver:localStorage.getItem("receiver")},
+    function(data){
+    var str=data.split("&");
+    var final="";
+    var i;
+    var from=str[0].split(" ");
+    var to=str[1].split(" ");
+    
+    for (i = 0; i < from.length; i++) {
+     if(from[i]!="list"&&from[i]!="")
+       {
+          var k=from[i].split("~");
+          var j;
+          var tmp="";
+          for(j=0;j<k.length;j++)tmp+=k[j]+" ";
+          final+=start1+tmp+end1;
+       }
+    }
+    
+    for (i = 0; i < to.length; i++) {
+     if(to[i]!="list"&&to[i]!="")
+       {
+          var k=to[i].split("~");
+          var j;
+          var tmp="";
+          for(j=0;j<k.length;j++)tmp+=k[j]+" ";
+          final+=start2+tmp+end2;
+       }
+    }
+    
+    $("#fn").html(final);
+    });
+}
+
+</script>
+</body>
+</html>

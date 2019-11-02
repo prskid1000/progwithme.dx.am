@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<title>User Contact List</title>
+<head>
+<link rel="stylesheet" href="style.css">
+<div id="hd">Contacts</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+<body id="bd">
+<br>
+<div id="fn"></div>
+<br>
+<div id="con">
+<div id="hd2">Chat</div>
+ <div id="fm2">Username:<br></div>
+<input type="text" id="data3"><br><br>
+<button type='button' id='lm2' onclick="chat()">Start</button>
+</div>
+<br>
+<div id="con">
+<div id="hd2">New contact</div>
+ <div id="fm2">Username:<br></div>
+<input type="text" id="data"><br><br>
+<button type='button' id='lm2' onclick="newlist()">Add</button>
+</div>
+<br>
+<div id="con">
+<div id="hd2">Delete contact</div>
+ <div id="fm2">Username:<br></div>
+<input type="text" id="data2"><br><br>
+<button type='button' id='lm2' onclick="del()">Delete</button>
+</div>
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+ get_contact();
+});
+
+var st="<div id='mast'><div id='dsp'>";
+var end="</div></div>";
+
+function get_contact()
+{
+    $.get("get_contact.php",{userid:localStorage.getItem("namedata")},
+    function(data){
+    var str=data.split(" ");
+    var final="";
+    var i;
+    for (i = 0; i < str.length; i++) {
+     if(str[i]!="")final+=st+(i+1)+".) "+str[i]+end;
+    }
+    $("#fn").html(final);
+    });
+}
+
+function chat()
+{
+   localStorage.setItem("receiver",$("#data3").val());
+   location.href = "/app/chat.html";
+}
+
+function del()
+{
+   $.get("remove_contact.php",{userid:localStorage.getItem("namedata"),receiver:$("#data2").val()},function(data){get_contact();});
+}
+
+function newlist()
+{
+   $.get("add_contact.php",{userid:localStorage.getItem("namedata"),receiver:$("#data").val()},function(data){get_contact();});
+}
+
+</script>
+</body>
+</html>

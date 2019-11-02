@@ -1,0 +1,138 @@
+#hd
+{
+    font-size:900%;
+    color:#326309;
+    text-align:center;
+}
+
+#hd:hover
+{
+    font-size:1000%;
+    color:#68d60b;
+    text-align:center;
+}
+
+#fm
+{
+    font-size:333%;
+    color:#68d60b;
+    text-align:center;
+}
+
+#lm
+{
+    font-size:54%;
+    color:#ffffff;
+    background-color:#0f7800;
+    text-align:center;
+    border:1%;
+}
+
+#lm:hover
+{
+    font-size:54%;
+    color:#0620fe;;
+    background-color:#0f7800;
+    text-align:center;
+    border:1%;
+}
+
+
+#lm1
+{
+    font-size:180%;
+    color:#ffffff;
+    background-color:#fe0667;
+    text-align:center;
+    padding:1%;
+    border:1%;
+}
+
+#lm1:hover
+{
+    font-size:180%;
+    color:#0620fe;
+    background-color:#fe0667;
+    text-align:center;
+    padding:1%;
+    border:1%;
+}
+
+#bd
+{
+   background-color:#c1ff71;
+}
+
+
+#dsp
+{
+    font-size:400%;
+    color:#5d00ff;
+}
+
+#mast
+{
+    padding:0% 5% 5% 5%;
+}
+
+#hd2
+{
+    font-size:300%;
+    color:#326309;
+    text-align:center;
+    padding:0% 2% 2% 2%;
+}
+
+#hd2:hover
+{
+    font-size:400;
+    color:#68d60b;
+    text-align:center;
+    padding:0% 2% 2% 2%;
+}
+
+#con
+{
+    text-align:center;
+}
+
+#fm2
+{
+    font-size:200%;
+    color:#5d00ff;
+}
+
+#lm2
+{
+    font-size:100%;
+    color:#ffffff;
+    background-color:#fe0667;
+    text-align:center;
+    padding:1%;
+}
+
+#lm2:hover
+{
+    font-size:100%;
+    color:#0620fe;
+    background-color:#fe0667;
+    text-align:center;
+    padding:1%;
+}
+
+
+#st1
+{
+ padding:1% 5%;
+ font-size: 150%;
+ background-color:#339933;
+ text-align:right;
+}
+
+#st2
+{
+ padding:1% 5%;
+ font-size: 150%;
+ background-color:#669900;
+ text-align:left;
+}
