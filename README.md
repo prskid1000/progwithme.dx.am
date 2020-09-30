@@ -1,5 +1,6 @@
 # IChat-Web
 
-It contains the site of IChat-Web
 ## Live At:
 http://letschat.dx.am/
+
+##It also contain Backend APIs of IChat

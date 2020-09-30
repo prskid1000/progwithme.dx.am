@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<title>User Contact List</title>
+<head>
+<link rel="stylesheet" href="style.css">
+<script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+<link rel="stylesheet" href="mystyle.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</head>
+<body class="bg-dark">
+
+<div class=" alert alert-success jumbotron jumbotron-fluid bg-light">
+   <h1 align="center" >IChat</h1>
+</div>
+
+<div class="alert alert-success" role="alert">
+<div class="row" align="center"><h2 class="col-sm-12">Contact List</h2></div>
+<div id="fn"></div>
+</div>
+
+<div class="alert alert-success" role="alert">
+<div class="row" align="center"><h3 class="col-sm-12">Action</h3></div>
+
+<form class="form-horizontal">
+<div class="form-group" align="center">
+<label class="col-sm-2 control-label">Username</label> <div class="col-sm-10"> <input class="form-control" id="data" type="text" required></div>
+</div>
+
+<div class="form-group" align="center">
+<button type="button" class="btn-sm bg-success wht col-8" onclick="chat()"> Chat</button></div>
+
+<div class="form-group" align="center">
+<button type="button" class="btn-sm bg-success wht col-8" onclick="newlist()"> Add</button></div>
+
+<div class="form-group" align="center">
+<button type="button" class="btn-sm bg-success wht col-8" onclick="del()"> Delete</button></div>
+
+</form>
+</div>
+
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+ get_contact();
+});
+
+var st="<li class='list-group-item list-group-item-info'>";
+var st3="<li class='list-group-item list-group-item-danger'>";
+var st2="<li class='list-group-item list-group-item-warning'>";
+var end="</li>";
+
+function get_contact()
+{
+    $.get("get_contact.php",{userid:localStorage.getItem("namedata")},
+    function(data){
+    var str=data.split(" ");
+    var final="";
+    var i;
+    for (i = 0; i < str.length; i++) {
+     if(str[i]!="")
+     {
+      if(i%2==0) final+=st2;
+      else if(i%3==0) final+=st3;
+      else final+=st;
+      final+=str[i]+end;
+     }
+    }
+    $("#fn").html(final);
+    });
+}
+
+function chat()
+{
+   localStorage.setItem("receiver",$("#data").val());
+   location.href = "/app/chat.html";
+}
+
+function del()
+{
+   $.get("remove_contact.php",{userid:localStorage.getItem("namedata"),receiver:$("#data").val()},function(data){get_contact();});
+}
+
+function newlist()
+{
+   $.get("add_contact.php",{userid:localStorage.getItem("namedata"),receiver:$("#data").val()},function(data){get_contact();});
+}
+
+</script>
+</body>
+</html>
