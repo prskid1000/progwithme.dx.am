@@ -54,14 +54,14 @@ class Accounts extends React.Component
       userid: this.state.userid,
       password: this.state.password
     }
-    axios.post("https://codenutb.herokuapp.com/isauth",  data , {
+    axios.post("https://ichatb.herokuapp.com/isauth",  data , {
       "Content-Type": "application/json" })
     .then(res => {
       console.log(res.data.success);
       if(res.data.success === "True")
       {
         localStorage.setItem('userid', this.state.userid);
-        localStorage.setItem('password', this.state.userid); 
+        localStorage.setItem('password', this.state.password); 
         this.props.history.push("/index");
       }
       else
@@ -76,14 +76,14 @@ class Accounts extends React.Component
       userid: this.state.userid,
       password: this.state.password
     }
-    axios.post("https://codenutb.herokuapp.com/adduser", data, {
+    axios.post("https://ichatb.herokuapp.com/adduser", data, {
       "Content-Type": "application/json"
     })
       .then(res => {
         console.log(res.data.success);
         if (res.data.success === "True") {
           localStorage.setItem('userid', this.state.userid);
-          localStorage.setItem('password', this.state.userid); 
+          localStorage.setItem('password', this.state.password); 
           this.props.history.push("/index");
         }
         else {
@@ -98,21 +98,15 @@ class Accounts extends React.Component
             <nav className="collapse navbar-collapse navbar navbar-expand-md navbar-dark bg-dark">
               <ul className="navbar-nav mr-auto">
                 <li className="nav-item">
-                  <a className="navbar-brand fa fa-fw fa-home big-icon" onClick={this.Home}></a>
+                  <a className="navbar-brand fa fa-fw fa-home big-icon text-white" onClick={this.Home}></a>
                 </li>
               </ul>
               <ul className="navbar-nav mr-auto">
                 <li className="nav-item">
-                  <p className="h1 text-warning font-italic font-weight-bolder">CodeNut</p>
+                  <p className="h1 text-warning font-italic font-weight-bolder">IChat-Web</p>
                 </li>
               </ul>
               <ul className="navbar-nav">
-                <li className="nav-item">
-                  <center><a className="navbar-brand fa fa-fw fa-book big-icon text-white"></a></center>
-                </li>
-                <li className="nav-item">
-                  <center><a className="navbar-brand fa fa-fw fa-pencil big-icon text-white"></a></center>
-                </li>
                 <li className="nav-item">
                   <center><a className="navbar-brand fa fa-fw fa-user big-icon text-white"></a></center>
                 </li>

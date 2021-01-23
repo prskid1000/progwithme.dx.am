@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var mongoDB = 'mongodb+srv://prskid1000:nIELmPiB3vZ4YkWQ@cluster0-qxsqv.mongodb.net/codenut?retryWrites=true&w=majority';
+var mongoDB = 'mongodb+srv://prskid1000:nIELmPiB3vZ4YkWQ@cluster0-qxsqv.mongodb.net/ichat?retryWrites=true&w=majority';
 mongoose.connect(mongoDB, { useNewUrlParser: true });
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB Connection Error'));
@@ -20,29 +20,18 @@ app.use(cookieParser());
 
 const control=require('./controller/control');
 
-app.post('/isauth', control.isAuth, control.verify);
+app.post('/isauth', control.isAuth);
 app.post('/adduser',control.addUser);
+app.get('/getusers', control.getUsers);
 app.post('/deleteuser', control.deleteUser);
 
-app.post('/upexp', control.isAuth, control.upExp);
-app.post('/downexp', control.isAuth, control.downExp);
+app.post('/setbox', control.setBox);
+app.post('/unsetbox', control.unsetBox);
+app.post('/deletebox', control.deleteBox);
 
-app.post('/createpost', control.isAuth, control.createPost);
-app.post('/deletepost', control.isAuth, control.deletePost);
-app.post('/updatepost', control.isAuth, control.updatePost);
+app.post('/getbox', control.getBox);
+app.post('/sendbox', control.sendBox);
 
-app.post('/upvoteq', control.isAuth, control.upVoteQ);
-app.post('/downvoteq', control.isAuth, control.downVoteQ);
-
-app.post('/createcomment', control.isAuth, control.createComment);
-app.post('/deletecomment', control.isAuth, control.deleteComment);
-app.post('/updatecomment', control.isAuth, control.updateComment);
-
-app.post('/upvotec', control.isAuth, control.upVoteC);
-app.post('/downvotec', control.isAuth, control.downVoteC);
-
-app.get('/getalluser', control.allUser);
-app.get('/getallpost', control.allPost);
 
 
 app.listen(process.env.PORT || 3000,

@@ -4,6 +4,17 @@ import { Button } from "react-bootstrap";
 import '../style/main.css';
 import axios from "axios";
 
+function remove(arr, value) {
+  var i = 0;
+  while (i < arr.length) {
+    if (arr[i] === value) {
+      arr.splice(i, 1);
+    } else {
+      ++i;
+    }
+  }
+  return arr;
+}
 
 class Index extends React.Component
 {
@@ -14,35 +25,119 @@ class Index extends React.Component
           alert:"Welcome to site",
           user: localStorage.getItem('userid'),
           password: localStorage.getItem('password'),
-          posts: [],
-          contributors: [{ 'userid': 'prskid1000', 'exp': '1000' }, { 'userid': 'devil2021', 'exp': '1000' }]
+          boxids: [],
+          chats: [],
+          members: []
         }
 
-      this.fullView = this.fullView.bind(this);
-      this.viewPosts = this.viewPosts.bind(this);
-      this.createPost = this.createPost.bind(this);
+      this.Continue = this.Continue.bind(this);
+      this.Delete = this.Delete.bind(this);
       this.Home = this.Home.bind(this);
+      this.newChat = this.newChat.bind(this);
     }
-
-  viewPosts(event){
-    this.props.history.push("/viewposts");
-  }
 
   Home(event) {
     this.props.history.push("/index");
   }
 
-  createPost(event) {
-    this.props.history.push("/createpost");
-  }
-    fullView(event){
-      var post = JSON.parse(event.target.value);
-      this.props.history.push({
-        pathname: '/postview',
-        state: { question: post.question, author: post.author}
-      });
-      this.props.history.push("/postview");
+  newChat(event){
+
+    var boxid = "#" + this.state.user + "-" + event.target.id;
+    console.log(boxid);
+
+    const data = {
+      userid: this.state.user,
+      boxid: boxid,
+      message: "Hi, " + event.target.id
     }
+
+    axios.post("https://ichatb.herokuapp.com/sendbox", data, {
+      "Content-Type": "application/json"
+    })
+      .then(res => {
+
+        if (res.data.success === "True") {
+          const data1 = {
+            userid: this.state.user,
+            boxid: boxid,
+          }
+
+          axios.post("https://ichatb.herokuapp.com/setbox", data1, {
+            "Content-Type": "application/json"
+          })
+            .then(res => {
+
+              if (res.data.success === "True") {
+                const data2 = {
+                  userid: event.target.id,
+                  boxid: boxid,
+                }
+
+                axios.post("https://ichatb.herokuapp.com/setbox", data2, {
+                  "Content-Type": "application/json"
+                })
+                  .then(res => {
+
+                    if (res.data.success === "True") {
+                      localStorage.setItem('boxid', boxid);
+                      this.props.history.push("/chat");
+                    }
+                    else {
+                      this.setState({ 'alert': "Error in Communication1" });
+                    }
+                  });
+              }
+              else {
+                this.setState({ 'alert': "Error in Communication2" });
+              }
+            });
+        }
+        else {
+          this.setState({ 'alert': "Error in Communication3" });
+        }
+      });
+  }
+
+  Continue(event) {
+    localStorage.setItem('boxid', event.target.id);
+    this.props.history.push("/chat");
+  }
+
+  Delete(event) {
+    const data = {
+      boxid: event.target.id,
+    }
+
+
+    axios.post("https://ichatb.herokuapp.com/deletebox", data, {
+      "Content-Type": "application/json"
+    });
+
+    const data1 = {
+      userid: event.target.id.substring(1, event.target.id.indexOf('-')),
+      boxid: event.target.id
+    }
+    axios.post("https://ichatb.herokuapp.com/unsetbox", data1, {
+      "Content-Type": "application/json"
+    });
+
+    const data2 = {
+      userid: event.target.id.substring(event.target.id.indexOf('-') + 1),
+      boxid: event.target.id
+    }
+    axios.post("https://ichatb.herokuapp.com/unsetbox", data2, {
+      "Content-Type": "application/json"
+    });
+
+    var local = new Array();
+    for (var i in this.state.chats) {
+      if (this.state.chats[i].boxid != event.target.id)
+        local.push(this.state.chats[i]);
+    }
+
+    remove(this.state.boxids, event.target.id);
+    this.setState({ 'boxids': this.state.boxids, 'chats': local });
+  }
   
   
 
@@ -51,41 +146,54 @@ class Index extends React.Component
     this.setState({ 'user': localStorage.getItem('userid') });
     this.setState({ 'password': localStorage.getItem('password') });
 
-    axios.get("https://codenutb.herokuapp.com/getallpost",{
+    const data = {
+      userid: this.state.user,
+      password: this.state.password
+    }
+    axios.post("https://ichatb.herokuapp.com/isauth", data, {
       "Content-Type": "application/json"
     })
       .then(res => {
-        
+
         if (res.data.success === "True") {
-          for (var i in res.data.data) {
-            this.state.posts.push({ question: res.data.data[i].question,
-              desciption: res.data.data[i].description,
-              author: res.data.data[i].author,
-              votes: res.data.data[i].votes,
-            });
-            if(i === 5)break;
+          for (var i in res.data.data.boxid) {
+            this.state.boxids.push(res.data.data.boxid[i]);
+            this.setState({ 'boxids': res.data.data.boxid });
+            console.log(this.state.boxids[i]);
+            axios.post("https://ichatb.herokuapp.com/getbox",
+              { boxid: this.state.boxids[i] }, {
+              "Content-Type": "application/json"
+            })
+              .then(res => {
+                if (res.data.success === "True") {
+                  this.state.chats.push({
+                    boxid: res.data.data.boxid,
+                    chat: res.data.data.chat
+                  })
+                  this.setState({ 'chats': this.state.chats });
+                }
+              });
           }
-          this.setState({'posts': this.state.posts});
         }
         else {
           this.setState({ 'alert': "Error in Communication" });
         }
       });
 
-    axios.get("https://codenutb.herokuapp.com/getalluser", {
+    axios.get("https://ichatb.herokuapp.com/getusers", {
       "Content-Type": "application/json"
     })
       .then(res => {
-
         if (res.data.success === "True") {
           for (var i in res.data.data) {
-            this.state.contributors.push({
-              userid: res.data.data[i].userid,
-              exp: res.data.data[i].exp,
-            });
-            if (i === 20) break;
+            if(this.state.user != res.data.data[i].userid)
+            {
+              this.state.members.push({
+                userid: res.data.data[i].userid,
+              });
+            }
           }
-          this.setState({ 'contributors': this.state.contributors });
+          this.setState({ 'members': this.state.members });
         }
         else {
           this.setState({ 'alert': "Error in Communication" });
@@ -99,7 +207,7 @@ class Index extends React.Component
             <nav className="collapse navbar-collapse navbar navbar-expand-md navbar-dark bg-dark">
               <ul className="navbar-nav mr-auto">
                 <li className="nav-item">
-                  <a className="navbar-brand fa fa-fw fa-home big-icon text-white" onClick={this.Home}></a>
+                  <a className="navbar-brand fa fa-fw fa-home big-icon text-white clickable" onClick={this.Home}></a>
                   <p className="h6 text-warning">Home</p>
                 </li>
                 <li className="nav-item">
@@ -109,18 +217,10 @@ class Index extends React.Component
               </ul>
               <ul className="navbar-nav mr-auto">
                 <li className="nav-item">
-                  <p className="h1 text-warning font-italic font-weight-bolder">CodeNut</p>
+                  <p className="h1 text-warning font-italic font-weight-bolder">IChat-Web</p>
                 </li>
               </ul>
               <ul className="navbar-nav">
-                <li className="nav-item">
-                  <center><a className="navbar-brand fa fa-fw fa-book big-icon text-white clickable"  onClick={this.viewPosts}></a></center>
-                  <p className="h6 text-warning">Posts</p>
-                </li>
-                <li className="nav-item">
-                  <center><a className="navbar-brand fa fa-fw fa-pencil big-icon text-white clickable" onClick={this.createPost}></a></center>
-                  <p className="h6 text-warning">Create</p>
-                </li>
                 <li className="nav-item">
                   <center><a className="navbar-brand fa fa-fw fa-user big-icon text-white"></a></center>
                   <p className="h6 text-warning">{this.state.user}</p>
@@ -136,21 +236,37 @@ class Index extends React.Component
             <br></br>
             <div className="row">
               <div className="col-10 bg-warning pb-5">
-                <center><p className="bg-dark col-6 h3 text-white font-weight-bolder">Top Posts!</p></center> 
+                <center><p className="bg-dark col-6 h3 text-white font-weight-bolder">Your Chats!</p></center> 
                 <center>
-                    {this.state.posts.map((post, index) => (
+                    {this.state.chats.map((chat, index) => (
                       <div className="row col-11 mt-2 pb-3" id={index}>
-                        <span className="h5 badge badge-danger" id={index}>
-                          Votes
+                        <span className="h5 badge badge-danger mr-1 p-1" id={index}>
+                          Boxid
                         <span className="badge badge-success">
-                            {post.votes}
+                            {chat.boxid}
                           </span>
                         </span>
                         <div className="card col-12">
                           <div className="card-body">
-                            <h5 className="card-title overflow-auto text-danger">{post.question}</h5>
-                            <p className="card-text overflow-auto">{post.desciption}</p>
-                            <center><Button className="btn btn-danger col-6" value={JSON.stringify(post)} onClick={this.fullView} id="Full View">Full View</Button></center>
+                            {chat.chat.reverse().slice(0,2).map((chat, index) => (
+                              <div className="input-group col-10 m-3">
+                                <div className="input-group-prepend">
+                                  {
+                                  chat.author != this.state.user &&
+                                    <span className="input-group-text text-success">{chat.author}</span>
+                                  }
+                                </div>
+                                <textarea className="form-control" className="form-control" value={chat.message}  disabled ></textarea>
+                                {
+                                  chat.author == this.state.user &&
+                                  <span className="input-group-text text-danger">{chat.author}</span>
+                                }
+                              </div>
+                            ))}
+                            <div className="row col-10">
+                              <Button className="btn btn-danger col-3 m-1" onClick={this.Delete} id={chat.boxid}>Delete Chat</Button>
+                              <Button className="btn btn-danger col-3 m-1" onClick={this.Continue} id={chat.boxid}>Continue Chat</Button>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -158,17 +274,16 @@ class Index extends React.Component
                 </center>
               </div>
               <div className="col-2 bg-muted">
-                <center><p className="bg-dark col text-white font-weight-bolder">Top Contributors!</p></center>
-                  {this.state.contributors.map((user, index) => (
-                    <span className="badge badge-danger m-1 p-1" id={index}>
+                <center><p className="bg-dark col text-white font-weight-bolder">Members!</p></center>
+                  {this.state.members.map((user, index) => (
+                    <span className="badge badge-danger m-1 pt-1" id={index}>
                       {user.userid}
-                      <span className="badge badge-success p-1">
-                        {user.exp}
+                      <span className="h2 badge badge-success p-2 m-1 clickable" id={user.userid} onClick={this.newChat} >
+                        New Chat
                       </span>
                     </span>
                   ))}
               </div>
-              <center className="col-10 mt-2 mb-5"><Button className="btn btn-dark col-12" onClick={this.viewPosts} id="View Posts">View More</Button></center>
             </div>
           </div>
         );
