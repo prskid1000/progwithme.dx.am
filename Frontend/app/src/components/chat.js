@@ -43,6 +43,9 @@ class postView extends React.Component
     this.setState({ 'mycomment': event.target.value });
   }
 
+  componentWillUnmount() {
+    clearInterval(this.interval)
+  }
 
   Home(event) {
     this.props.history.push("/index");
@@ -50,6 +53,8 @@ class postView extends React.Component
 
   componentDidMount() {
 
+    this.interval = setInterval(() => this.setState({ time: Date.now() }), 10000);
+    
     this.setState({ 'user': localStorage.getItem('userid') });
     this.setState({ 'password': localStorage.getItem('password') });
     this.setState({ 'boxid': localStorage.getItem('boxid') });

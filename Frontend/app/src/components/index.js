@@ -139,9 +139,13 @@ class Index extends React.Component
     this.setState({ 'boxids': this.state.boxids, 'chats': local });
   }
   
-  
+  componentWillUnmount(){
+    clearInterval(this.interval)
+  }
 
   componentDidMount() {
+
+    this.interval = setInterval(() => this.setState({time: Date.now()}), 10000);
 
     this.setState({ 'user': localStorage.getItem('userid') });
     this.setState({ 'password': localStorage.getItem('password') });
