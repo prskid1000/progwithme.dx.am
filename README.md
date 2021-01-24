@@ -1,6 +1,9 @@
 # IChat-Web
 
 ## Live At:
+https://ichatweb.netlify.app/
+
+### Old Site
 http://letschat.dx.am/
 
 ### It also contain Backend APIs of IChat
