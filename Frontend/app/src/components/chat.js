@@ -44,17 +44,16 @@ class postView extends React.Component
   }
 
   componentWillUnmount() {
-    clearInterval(this.interval)
+    clearTimeout(this.intervalID);
   }
 
   Home(event) {
     this.props.history.push("/index");
   }
 
-  componentDidMount() {
-
+  getData = () => {
     this.interval = setInterval(() => this.setState({ time: Date.now() }), 10000);
-    
+
     this.setState({ 'user': localStorage.getItem('userid') });
     this.setState({ 'password': localStorage.getItem('password') });
     this.setState({ 'boxid': localStorage.getItem('boxid') });
@@ -67,18 +66,24 @@ class postView extends React.Component
       "Content-Type": "application/json"
     })
       .then(res => {
-        if(res.data.success === "True") {
-        
-          for (var i of res.data.data.chat)
-          {
-            this.state.chats.push({author: i.author, message: i.message})
+        if (res.data.success === "True") {
+          this.setState({ 'chats': [] });
+          for (var i of res.data.data.chat) {
+            this.state.chats.push({ author: i.author, message: i.message })
           }
-            this.setState({'chats': this.state.chats});
-          }
+          this.setState({ 'chats': this.state.chats });
+        }
         else {
           this.setState({ 'alert': "Error in Communication" });
         }
       });
+
+    this.intervalID = setTimeout(this.getData.bind(this), 5000);
+    console.log("hi");
+  }
+
+  componentDidMount() {
+    this.getData();
   }
 
     render() {

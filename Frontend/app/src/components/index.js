@@ -27,7 +27,8 @@ class Index extends React.Component
           password: localStorage.getItem('password'),
           boxids: [],
           chats: [],
-          members: []
+          members: [],
+          time: ""
         }
 
       this.Continue = this.Continue.bind(this);
@@ -140,13 +141,10 @@ class Index extends React.Component
   }
   
   componentWillUnmount(){
-    clearInterval(this.interval)
+    clearTimeout(this.intervalID);
   }
 
-  componentDidMount() {
-
-    this.interval = setInterval(() => this.setState({time: Date.now()}), 10000);
-
+  getData = () => {
     this.setState({ 'user': localStorage.getItem('userid') });
     this.setState({ 'password': localStorage.getItem('password') });
 
@@ -163,13 +161,13 @@ class Index extends React.Component
           for (var i in res.data.data.boxid) {
             this.state.boxids.push(res.data.data.boxid[i]);
             this.setState({ 'boxids': res.data.data.boxid });
-            console.log(this.state.boxids[i]);
             axios.post("https://ichatb.herokuapp.com/getbox",
               { boxid: this.state.boxids[i] }, {
               "Content-Type": "application/json"
             })
               .then(res => {
                 if (res.data.success === "True") {
+                  this.setState({ 'chats': []});
                   this.state.chats.push({
                     boxid: res.data.data.boxid,
                     chat: res.data.data.chat
@@ -189,9 +187,9 @@ class Index extends React.Component
     })
       .then(res => {
         if (res.data.success === "True") {
+          this.setState({ 'members': [] });
           for (var i in res.data.data) {
-            if(this.state.user != res.data.data[i].userid)
-            {
+            if (this.state.user != res.data.data[i].userid) {
               this.state.members.push({
                 userid: res.data.data[i].userid,
               });
@@ -203,6 +201,12 @@ class Index extends React.Component
           this.setState({ 'alert': "Error in Communication" });
         }
       });
+
+      this.intervalID = setTimeout(this.getData.bind(this), 5000);
+  }
+
+  componentDidMount() {
+    this.getData()
   }
 
     render() {
