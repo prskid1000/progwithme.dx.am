@@ -6,7 +6,12 @@ https://ichatweb.netlify.app/
 ### Old Site
 http://letschat.dx.am/
 
-### It also contain Backend APIs of IChat
+![1](https://github.com/prskid1000/IChat-Web/blob/main/Preview/1.png?raw=true)
+
+![2](https://github.com/prskid1000/IChat-Web/blob/main/Preview/2.png?raw=true)
+
+![3](https://github.com/prskid1000/IChat-Web/blob/main/Preview/3.png?raw=true)
+
 
 
 ## Status
