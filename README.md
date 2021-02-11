@@ -1,11 +1,11 @@
 # IChat-Web
 
 
-![1](https://github.com/prskid1000/IChat-Web/blob/main/Preview/1.png?raw=true)
+![1](https://github.com/prskid1000/IChat-Web/blob/master/Preview/1.png?raw=true)
 
-![2](https://github.com/prskid1000/IChat-Web/blob/main/Preview/2.png?raw=true)
+![2](https://github.com/prskid1000/IChat-Web/blob/master/Preview/2.png?raw=true)
 
-![3](https://github.com/prskid1000/IChat-Web/blob/main/Preview/3.png?raw=true)
+![3](https://github.com/prskid1000/IChat-Web/blob/master/Preview/3.png?raw=true)
 
 ## Live At:
 https://ichatweb.netlify.app/
