@@ -33,13 +33,18 @@ class Index extends React.Component
 
       this.Continue = this.Continue.bind(this);
       this.Delete = this.Delete.bind(this);
+      this.Home = this.Home.bind(this);
       this.newChat = this.newChat.bind(this);
     }
+
+  Home(event) {
+    this.props.history.push("/index");
+  }
 
   newChat(event){
 
     var boxid = "#" + this.state.user + "-" + event.target.id;
-    console.log(event.target.id);
+    console.log(boxid);
 
     const data = {
       userid: this.state.user,
@@ -151,9 +156,8 @@ class Index extends React.Component
       "Content-Type": "application/json"
     })
       .then(res => {
+
         if (res.data.success === "True") {
-          var c = []
-          console.log(c);
           for (var i in res.data.data.boxid) {
             this.state.boxids.push(res.data.data.boxid[i]);
             this.setState({ 'boxids': res.data.data.boxid });
@@ -163,11 +167,12 @@ class Index extends React.Component
             })
               .then(res => {
                 if (res.data.success === "True") {
-                  c.push({
+                  this.setState({ 'chats': []});
+                  this.state.chats.push({
                     boxid: res.data.data.boxid,
                     chat: res.data.data.chat
                   })
-                  this.setState({ 'chats': c });
+                  this.setState({ 'chats': this.state.chats });
                 }
               });
           }
@@ -196,7 +201,8 @@ class Index extends React.Component
           this.setState({ 'alert': "Error in Communication" });
         }
       });
-      this.intervalID = setTimeout(this.getData.bind(this), 20000);
+
+      this.intervalID = setTimeout(this.getData.bind(this), 5000);
   }
 
   componentDidMount() {
@@ -205,112 +211,86 @@ class Index extends React.Component
 
     render() {
         return (
-          <div>
-            <nav className="grey darken-4 mb-3">
-              <div className="nav-wrapper m-5 ">
-                <ul className="left ">
-                  <li><a href="#" className="left brand-logo hide-on-small-only">IChat-Web</a></li>
-                  <li><a href="#" className="left hide-on-med-and-up">IChat-Web</a></li>
-                </ul>
-                <ul className="right">
-                  <li><a href="/index"><i className="left material-icons">home</i></a></li>
-                  <li><a href="/"><i className="material-icons">logout</i></a></li>
-                </ul>
-              </div>
+          <div className="container">
+            <nav className="collapse navbar-collapse navbar navbar-expand-md navbar-dark bg-dark">
+              <ul className="navbar-nav mr-auto">
+                <li className="nav-item">
+                  <a className="navbar-brand fa fa-fw fa-home big-icon text-white clickable" onClick={this.Home}></a>
+                  <p className="h6 text-warning">Home</p>
+                </li>
+                <li className="nav-item">
+                  <center><a className="navbar-brand fa fa-fw fa-sign-out big-icon text-white clickable" href="/"></a></center>
+                  <p className="h6 text-warning">Logout</p>
+                </li>
+              </ul>
+              <ul className="navbar-nav mr-auto">
+                <li className="nav-item">
+                  <p className="h1 text-warning font-italic font-weight-bolder">IChat-Web</p>
+                </li>
+              </ul>
+              <ul className="navbar-nav">
+                <li className="nav-item">
+                  <center><a className="navbar-brand fa fa-fw fa-user big-icon text-white"></a></center>
+                  <p className="h6 text-warning">{this.state.user}</p>
+                </li>
+              </ul>
             </nav>
-
-            <div className="alert white-text grey darken-1 alert-dismissible fade show" role="alert">
+            <div className="alert alert-warning alert-dismissible fade show" role="alert">
               <strong>{this.state.alert}</strong>
               <button type="button" className="close" data-dismiss="alert" aria-label="Close">
               <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <br></br>
-
             <div className="row">
-              <div className="jumbotron col-sm-3 hide-on-med-and-up">
-                <div class="jumbotron">
-                  <center><h2>Users</h2></center>
-                  <center className="pb-5">
-                    {this.state.members.map((user, index) => (
-                      <div className="card col">
-                        <div className="row m-1">
-                          <span class="col-8 h4 mt-1 mb-1 ml-1" id={index}>
-                            {user.userid}
-                          </span>
-                          <span class="col-3 new badge teal mt-2 mb-1 darken-4" data-badge-caption="" id={user.userid} onClick={this.newChat} >
-                            <a href="#" class="nostyle">
-                              New Chat
-                          </a>
-                          </span>
-                        </div>
-                      </div>
-                    ))}
-                  </center>
-                </div>
-              </div>
-              <div className="col-sm-9">
-                <div class="jumbotron">
-                  <center><h2>My Chats</h2></center>
-                  <center>
+              <div className="col-10 bg-warning pb-5">
+                <center><p className="bg-dark col-6 h3 text-white font-weight-bolder">Your Chats!</p></center> 
+                <center>
                     {this.state.chats.map((chat, index) => (
-              
                       <div className="row col-11 mt-2 pb-3" id={index}>
-
-                        <div className="card col-sm-12">
-
-                          <span class="new badge teal darken-4 m-3" data-badge-caption="">
+                        <span className="h5 badge badge-danger mr-1 p-1" id={index}>
+                          Boxid
+                        <span className="badge badge-success">
                             {chat.boxid}
                           </span>
+                        </span>
+                        <div className="card col-12">
                           <div className="card-body">
                             {chat.chat.reverse().slice(0,2).map((chat, index) => (
-                              <div className="row">
-                                {
+                              <div className="input-group col-10 m-3">
+                                <div className="input-group-prepend">
+                                  {
                                   chat.author != this.state.user &&
-                                  <span className="input-group-text text-success col-sm-2 m-1">{chat.author}</span>
-                                }
+                                    <span className="input-group-text text-success">{chat.author}</span>
+                                  }
+                                </div>
+                                <textarea className="form-control" className="form-control" value={chat.message}  disabled ></textarea>
                                 {
                                   chat.author == this.state.user &&
-                                  <span className="input-group-text red-text col-sm-2 m-1 hide-on-med-and-up">{chat.author}</span>
-                                }
-                                <textarea class="materialize-textarea col-sm-9 m-1" value={chat.message}  disabled ></textarea>
-                                {
-                                  chat.author == this.state.user &&
-                                  <span className="input-group-text red-text col-sm-2 m-1 hide-on-small-only">{chat.author}</span>
+                                  <span className="input-group-text text-danger">{chat.author}</span>
                                 }
                               </div>
                             ))}
-                            <div className="row">
-                              <Button className="btn teal darken-4 col-sm-4 m-1 mr-3" onClick={this.Delete} id={chat.boxid}>Delete Chat</Button>
-                              <Button className="btn teal darken-4 col-sm-4 m-1 mr-3" onClick={this.Continue} id={chat.boxid}>Continue Chat</Button>
+                            <div className="row col-10">
+                              <Button className="btn btn-danger col-3 m-1" onClick={this.Delete} id={chat.boxid}>Delete Chat</Button>
+                              <Button className="btn btn-danger col-3 m-1" onClick={this.Continue} id={chat.boxid}>Continue Chat</Button>
                             </div>
                           </div>
                         </div>
                       </div>
                     ))}
                 </center>
-                </div>
               </div>
-              <div className="col-sm-3 hide-on-small-only">
-                <div class="jumbotron">
-                  <center><h2>Users</h2></center>
-                  <center className="pb-5 m-5">
-                    {this.state.members.map((user, index) => (
-                      <div className="card col">
-                        <div className="row m-1">
-                          <span class="col-8 h4 mt-1 mb-1 ml-1" id={index}>
-                            {user.userid}
-                          </span>
-                          <span class="col-3 new badge teal mt-2 mb-1 darken-4" data-badge-caption="">
-                            <a href="#" class="nostyle" id={user.userid} onClick={this.newChat} >
-                              New Chat
-                          </a>
-                          </span>
-                        </div>   
-                      </div>
-                    ))}
-                  </center>
-                </div>
+              <div className="col-2 bg-muted">
+                <center><p className="bg-dark col text-white font-weight-bolder">Members!</p></center>
+                  {this.state.members.map((user, index) => (
+                    <span className="badge badge-danger m-1 pt-1" id={index}>
+                      {user.userid}
+                      <span className="h2 badge badge-success p-2 m-1 clickable" id={user.userid} onClick={this.newChat} >
+                        New Chat
+                      </span>
+                    </span>
+                  ))}
               </div>
             </div>
           </div>

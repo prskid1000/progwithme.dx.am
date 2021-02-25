@@ -1,0 +1,10 @@
+curl --data "userid=prskid1000&password=1289" http://localhost:3000/adduser
+curl --data "userid=prskid1000&password=1289" http://localhost:3000/deleteuser
+curl --data "userid=prskid1000&password=1289" http://localhost:3000/isauth
+curl --data "userid=prskid1000&boxid=ffgd" http://localhost:3000/setbox
+curl --data "userid=prskid1000&boxid=ffgd" http://localhost:3000/unsetBox
+
+curl --data "userid=prskid1000&boxid=ffgd&message=hi dude" http://localhost:3000/sendbox
+curl --data "boxid=ffgd" http://localhost:3000/getbox
+curl --data "boxid=ffgd" http://localhost:3000/deletebox
+curl http://localhost:3000/getusers
