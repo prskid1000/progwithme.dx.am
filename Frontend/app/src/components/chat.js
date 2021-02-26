@@ -47,10 +47,6 @@ class postView extends React.Component
     clearTimeout(this.intervalID);
   }
 
-  Home(event) {
-    this.props.history.push("/index");
-  }
-
   getData = () => {
     this.interval = setInterval(() => this.setState({ time: Date.now() }), 10000);
 
@@ -86,74 +82,71 @@ class postView extends React.Component
     this.getData();
   }
 
+  Home(event) {
+    this.props.history.push("/index");
+  }
+
     render() {
         return (
-          <div className="container">
-            <nav className="collapse navbar-collapse navbar navbar-expand-md navbar-dark bg-dark">
-              <ul className="navbar-nav mr-auto">
-                <li className="nav-item">
-                  <a className="navbar-brand fa fa-fw fa-home big-icon text-white" onClick={this.Home}></a>
-                  <p className="h6 text-warning">Home</p>
-                </li>
-                <li className="nav-item">
-                  <center><a className="navbar-brand fa fa-fw fa-sign-out big-icon text-white clickable" href="/"></a></center>
-                  <p className="h6 text-warning">Logout</p>
-                </li>
-              </ul>
-              <ul className="navbar-nav mr-auto">
-                <li className="nav-item">
-                  <p className="h1 text-warning font-italic font-weight-bolder">IChat-Web</p>
-                </li>
-              </ul>
-              <ul className="navbar-nav">
-                <li className="nav-item">
-                  <center><a className="navbar-brand fa fa-fw fa-user big-icon text-white" ></a></center>
-                  <p className="h6 text-warning">{this.state.user}</p>
-                </li>
-              </ul>
+          <div>
+            <nav className="grey darken-4 mb-3">
+              <div className="nav-wrapper m-5 ">
+                <ul className="left ">
+                  <li><a href="#" className="left brand-logo hide-on-small-only">IChat-Web</a></li>
+                  <li><a href="#" className="left hide-on-med-and-up">IChat-Web</a></li>
+                </ul>
+                <ul className="right">
+                  <li><a href="#"><i className="material-icons" onClick={this.Home}>home</i></a></li>
+                  <li><a href="/"><i className="material-icons">logout</i></a></li>
+                </ul>
+              </div>
             </nav>
-            <div className="alert alert-warning alert-dismissible fade show" role="alert">
+
+            <div className="alert white-text grey darken-1 alert-dismissible fade show" role="alert">
               <strong>{this.state.alert}</strong>
               <button type="button" className="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
+                <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <br></br>
+
             <div className="row">
-              <div className="col-12 bg-dark p-5">
-                <div className="input-group col-8 m-3">
-                  <span className="h1 badge badge-warning col-3 m-1">
-                    Boxid
-                        <span className="badge badge-success">
-                      {this.state.boxid}
+              <div className="col-sm">
+                <div class="jumbotron">
+                  <center><h2>Chat</h2></center>
+                  <div className="row col-11 mt-2 pb-3">
+                    <div className="card col-sm-12">
+                      <span class="new badge teal darken-4 m-3" data-badge-caption="">
+                        {this.state.boxid}
                       </span>
-                  </span>
-                </div>
-                {this.state.chats.map((chat, index) => (
-                  <div className="input-group col-10 m-4">
-                    <div className="input-group-prepend">
-                      {
-                        chat.author != this.state.user &&
-                        <span className="input-group-text text-success">{chat.author}</span>
-                      }
+                      <div className="card-body">
+                        {this.state.chats.map((chat, index) => (
+                          <div className="row">
+                            {
+                              chat.author != this.state.user &&
+                              <span className="input-group-text text-success col-sm-2 m-1">{chat.author}</span>
+                            }
+                            {
+                              chat.author == this.state.user &&
+                              <span className="input-group-text red-text col-sm-2 m-1 hide-on-med-and-up">{chat.author}</span>
+                            }
+                            <textarea class="materialize-textarea col-sm-9 m-1" value={chat.message} disabled ></textarea>
+                            {
+                              chat.author == this.state.user &&
+                              <span className="input-group-text red-text col-sm-2 m-1 hide-on-small-only">{chat.author}</span>
+                            }
+                          </div>
+                        ))}
+                        <div className="row">
+                          <textarea class="materialize-textarea col-sm-8 m-1" value={this.state.mycomment} onChange={this.handleChange}></textarea>
+                          <Button className="btn btn-danger col-sm-3 m-1" onClick={this.addComment} id="Send Message">Send Message</Button>
+                        </div>
+                      </div>
                     </div>
-                    <textarea className="form-control" className="form-control" value={chat.message} disabled ></textarea>
-                    {
-                      chat.author == this.state.user &&
-                      <span className="input-group-text text-danger">{chat.author}</span>
-                    }
                   </div>
-                ))}
-                <div className="input-group col-10 m-3">
-                  <div className="input-group-prepend">
-                    <span className="input-group-text text-danger">Message</span>
-                  </div>
-                  <textarea rows="5" className="form-control" className="form-control" value={this.state.mycomment} onChange={this.handleChange}></textarea>
-                  <div className="input-group col-2 m-3">
-                    <Button className="btn btn-danger" onClick={this.addComment} id="Send Message">Send Message</Button>
-                  </div>
+
                 </div>
-              </div> 
+              </div>
             </div>
           </div>
         );
