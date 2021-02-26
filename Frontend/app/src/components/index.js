@@ -241,7 +241,7 @@ class Index extends React.Component
                     {this.state.members.map((user, index) => (
                       <div className="card col">
                         <div className="row m-1">
-                          <span class="col-8 h4 mt-1 mb-1 ml-1" id={index}>
+                          <span class="col-8 h5 mt-1 mb-1 ml-1" id={index}>
                             {user.userid}
                           </span>
                           <span class="col-3 new badge teal mt-2 mb-1 darken-4" data-badge-caption="" id={user.userid} onClick={this.newChat} >
@@ -300,16 +300,16 @@ class Index extends React.Component
               <div className="col-sm-3 hide-on-small-only">
                 <div class="jumbotron">
                   <center><h2>Users</h2></center>
-                  <center className="pb-5 m-5">
+                  <center className="pb-5 m-3">
                     {this.state.members.map((user, index) => (
                       <div className="card col">
-                        <div className="row m-1">
-                          <span class="col-8 h4 mt-1 mb-1 ml-1" id={index}>
+                        <div className="row mb-1">
+                          <span class="col-6 h5 mt-2 mb-1" id={index}>
                             {user.userid}
                           </span>
-                          <span class="col-3 new badge teal mt-2 mb-1 darken-4" data-badge-caption="">
+                          <span class="col-1 new badge teal mt-2 mb-1 darken-4" data-badge-caption="">
                             <a href="#" class="nostyle" id={user.userid} onClick={this.newChat} >
-                              New Chat
+                              New
                           </a>
                           </span>
                         </div>   
