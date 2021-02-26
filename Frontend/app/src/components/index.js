@@ -34,6 +34,7 @@ class Index extends React.Component
       this.Continue = this.Continue.bind(this);
       this.Delete = this.Delete.bind(this);
       this.newChat = this.newChat.bind(this);
+      this.Home = this.Home.bind(this);
     }
 
   newChat(event){
@@ -196,11 +197,16 @@ class Index extends React.Component
           this.setState({ 'alert': "Error in Communication" });
         }
       });
-      this.intervalID = setTimeout(this.getData.bind(this), 20000);
+      this.intervalID = setTimeout(this.getData.bind(this), 10000);
   }
 
   componentDidMount() {
     this.getData()
+  }
+
+  Home(event) {
+    console.log("hii");
+    this.props.history.push("/index");
   }
 
     render() {
@@ -213,7 +219,7 @@ class Index extends React.Component
                   <li><a href="#" className="left hide-on-med-and-up">IChat-Web</a></li>
                 </ul>
                 <ul className="right">
-                  <li><a href="/index"><i className="left material-icons">home</i></a></li>
+                  <li><a href="#"><i className="material-icons" onClick={this.Home}>home</i></a></li>
                   <li><a href="/"><i className="material-icons">logout</i></a></li>
                 </ul>
               </div>

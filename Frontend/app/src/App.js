@@ -10,8 +10,8 @@ function App() {
     <Router>
       <Switch>
         <Route exact path="/" component={Accounts} />
-        <Route exact path="/index" component={Index} />
-        <Route exact path="/chat" component={Chat} />
+        <Route path="/index" component={Index} />
+        <Route path="/chat" component={Chat} />
       </Switch>
     </Router>
   );

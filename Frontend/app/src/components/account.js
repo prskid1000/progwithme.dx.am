@@ -106,7 +106,7 @@ class Accounts extends React.Component
                   <li><a href="#" className="left hide-on-med-and-up">IChat-Web</a></li>
                 </ul>
                 <ul className="right">
-                  <li><a href="/index"><i className="left material-icons">home</i></a></li>
+                  <li><a href="/"><i className="left material-icons">home</i></a></li>
                   <li><a href="/"><i className="material-icons">logout</i></a></li>
                 </ul>
               </div>

@@ -20,6 +20,7 @@ class postView extends React.Component
    
     this.handleChange = this.handleChange.bind(this);
     this.addComment = this.addComment.bind(this);
+    this.Home = this.Home.bind(this);
   }
 
   addComment(event) {
@@ -81,6 +82,10 @@ class postView extends React.Component
     this.getData();
   }
 
+  Home(event) {
+    this.props.history.push("/index");
+  }
+
     render() {
         return (
           <div>
@@ -91,7 +96,7 @@ class postView extends React.Component
                   <li><a href="#" className="left hide-on-med-and-up">IChat-Web</a></li>
                 </ul>
                 <ul className="right">
-                  <li><a href="/index"><i className="left material-icons">home</i></a></li>
+                  <li><a href="#"><i className="material-icons" onClick={this.Home}>home</i></a></li>
                   <li><a href="/"><i className="material-icons">logout</i></a></li>
                 </ul>
               </div>
