@@ -106,7 +106,6 @@ class Accounts extends React.Component
                 <ul className="right">
                   <li><a href="https://wellcart.netlify.app/"><i className="material-icons">store</i></a></li>
                   <li><a href="/"><i className="material-icons">home</i></a></li>
-                  <li><a href="/"><i className="material-icons">logout</i></a></li>
                 </ul>
               </div>
             </nav>
