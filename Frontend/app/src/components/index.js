@@ -40,7 +40,7 @@ class Index extends React.Component
   newChat(event){
 
     var boxid = "#" + this.state.user + "-" + event.target.id;
-    console.log(event.target.id);
+    console.log(boxid);
 
     const data = {
       userid: this.state.user,
@@ -214,11 +214,10 @@ class Index extends React.Component
           <div>
             <nav className="grey darken-4 mb-3">
               <div className="nav-wrapper m-5 ">
-                <ul className="left ">
-                  <li><a href="#" className="left brand-logo hide-on-small-only">IChat-Web</a></li>
-                  <li><a href="#" className="left hide-on-med-and-up">IChat-Web</a></li>
-                </ul>
+                <a href="#" className="left brand-logo hide-on-small-only">IChat-Web</a>
+                <a href="#" className="left hide-on-med-and-up">IChat-Web</a>
                 <ul className="right">
+                  <li><a href="https://wellcart.netlify.app/"><i className="material-icons">store</i></a></li>
                   <li><a href="#"><i className="material-icons" onClick={this.Home}>home</i></a></li>
                   <li><a href="/"><i className="material-icons">logout</i></a></li>
                 </ul>
