@@ -101,13 +101,11 @@ class Accounts extends React.Component
           <div className="container">
             <nav className="grey darken-4 mb-3">
               <div className="nav-wrapper m-5 ">
-                <ul className="left ">
-                  <li><a href="#" className="left brand-logo hide-on-small-only">IChat-Web</a></li>
-                  <li><a href="#" className="left hide-on-med-and-up">IChat-Web</a></li>
-                </ul>
+                <a href="#" className="left brand-logo hide-on-small-only">IChat-Web</a>
+                <a href="#" className="left hide-on-med-and-up">IChat-Web</a>
                 <ul className="right">
-                  <li><a href="/"><i className="left material-icons">home</i></a></li>
-                  <li><a href="/"><i className="material-icons">logout</i></a></li>
+                  <li><a href="https://wellcart.netlify.app/"><i className="material-icons">store</i></a></li>
+                  <li><a href="/"><i className="material-icons">home</i></a></li>
                 </ul>
               </div>
             </nav>
