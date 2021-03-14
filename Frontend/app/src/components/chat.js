@@ -138,7 +138,7 @@ class postView extends React.Component
                         ))}
                         <div className="row">
                           <textarea class="materialize-textarea col-sm-8 m-1" value={this.state.mycomment} onChange={this.handleChange}></textarea>
-                          <Button className="btn btn-danger col-sm-3 m-1" onClick={this.addComment} id="Send Message">Send Message</Button>
+                          <Button className="btn teal darken-4 col-sm-3 m-1" onClick={this.addComment} id="Send Message">Send Message</Button>
                         </div>
                       </div>
                     </div>
