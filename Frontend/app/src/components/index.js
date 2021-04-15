@@ -296,7 +296,7 @@ class Index extends React.Component
                 </center>
                 </div>
               </div>
-              <div className="col-sm-3 hide-on-small-only">
+              <div className=" jumbotron col-sm-3 hide-on-small-only">
                 <div class="jumbotron">
                   <center><h2>Users</h2></center>
                   <center className="pb-5 m-3">
